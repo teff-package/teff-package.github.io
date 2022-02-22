@@ -4,11 +4,11 @@ navbar:
   title: "The teff R package"
   left:
     - text: "Quick Start"
-      href: teff.html
+      href: https://teff-package.github.io/teff/teff.html
     - text: "Case Study: Psoriasis"
-      href: teff.html
+      href: https://teff-package.github.io/teff/teff.html
     - text: "Sexual Dimorphism"
-      href: dimorphisms.html
+      href: https://teff-package.github.io/teff/dimorphisms.html
   right:
     - icon: fa-envelope fa-lg
       href: alejandro.caceres@isglobal.org
