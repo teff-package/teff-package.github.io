@@ -45,6 +45,16 @@ install_github("teff-package/teff")
 </code>
 
 
-</br>See vignettes  [teff](https://teff-package.github.io/teff/teff.html) and [dimorphisms](https://teff-package.github.io/teff/dimorphisms.html) 
-online
 
+</br>See [application to Brodalumab treatment of psoriasis](https://teff-package.github.io/teff/SupplementaryCaceres2021.html)
+
+
+Cite: Alejandro Caceres and Juan R Gonzalez. teff: estimation of Treatment EFFects on transcriptomic data with casual random forest, 2022; under submission.  
+
+------
+------
+
+
+<i class="fas fa-flask"></i>&nbsp; [ISGlobal](https://www.isglobal.org/en)<br />
+<i class="fab fa-github"></i>&nbsp; [BRGE](https://github.com/isglobal-brge)<br />
+<i class="fas fa-envelope fa-lg"></i>&nbsp; [alejandro.caceres@isglobal.org](mailto:alejandro.caceres@isglobal.org) <br />
