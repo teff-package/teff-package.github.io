@@ -10,12 +10,10 @@ navbar:
     - text: "Sexual Dimorphism"
       href: https://teff-package.github.io/teff/dimorphisms.html
   right:
-    - icon: fa-envelope fa-lg
-      href: alejandro.caceres@isglobal.org
-    - icon: fa-github fa-lg
-      href: https://github.com/isglobal-brge
     - icon: fa-link fa-lg
       href: https://brge.isglobal.org/
+    - icon: fa-envelope fa-lg
+      href: mailto:alejandro.caceres@isglobal.org
 
 output:
   html_document:
