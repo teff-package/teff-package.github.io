@@ -1,0 +1,20 @@
+name: "teff: Profiling heterogenous Treatment EFFects with transcriptomic data"
+output_dir: "."
+navbar:
+  title: "The teff R package"
+  left:
+    - text: "Quick Start"
+      href: teff.html
+    - text: "Case Study: Psoriasis"
+      href: teff.html
+    - text: "Sexual Dimorphism"
+      href: dimorphisms.html
+  right:
+    - icon: fa-envelope fa-lg
+      href: alejandro.caceres@isglobal.org
+    - icon: fa-github fa-lg
+      href: http://github.com/teff-package
+output:
+  html_document:
+    theme: paper
+    css: 'styles.css'

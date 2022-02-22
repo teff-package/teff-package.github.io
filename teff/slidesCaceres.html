@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Using causal random forest to determine exposure environmenents with high sexual dimorphism</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Alejandro Cáceres" />
+    <link href="slidesCaceres_files/remark-css/default.css" rel="stylesheet" />
+    <link href="slidesCaceres_files/remark-css/default-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="my.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Using causal random forest to determine exposure environmenents with high sexual dimorphism
+## Exposome Data Challenge/ISGlobal 2021
+### <a href="#alejandro-caceres">Alejandro Cáceres</a>
+### 04/28
+
+---
+
+
+
+
+
+class: middle, center
+
+## Can we identify exposure environments with high sexual dimorphism in human development?
+
+---
+
+
+class: middle
+
+## Boys and girls develop differently
+
+- Their **immune response** to infections differ from an early age.
+
+- Their **brains** grow at different rates.
+
+- The prevalence of numerous **common diseases**, like *obesity*, is different, with boys having higher risk.
+
+
+
+---
+
+
+class: middle
+
+## Why studying sex differences?
+
+- The **main difference** between people is sex, underlying differences in disease risk and outcome. 
+
+- **Precision public health** and medicine aim to apply the best intervention at the right time to the right population. 
+
+- Sex differences in disease can inform on **etiology**. 
+
+- Age-related diseases like cancer, Alzheimer's and autoimmune diseases are strongly influenced by **sex hormones**. 
+
+- Studying **preteens** can inform on non-hormonal mechanisms of sexual dimorphism in disease.  
+
+
+
+
+---
+
+
+class: middle
+
+
+## Hypothesis
+
+*A co-ocurrence of environmental conditions can be identified from exposomic data such that the differences in BMI between boys and girls is highest.*
+
+
+---
+
+
+class: middle
+
+## The exposome
+
+
+
+High-dimensional exposure data that **overspecifies** each individual. 
+
+&lt;img src="img/exp.jpg" style="width:100%"  align="center"&gt;
+
+
+
+---
+
+
+class: middle
+
+## The exposome, sex and BMI
+
+We want to link it with BMI differences between boys and girls. 
+
+&lt;img src="img/bmiexp.jpg" style="width:100%"  align="center"&gt;
+
+
+---
+
+
+class: middle
+
+## Causal inference
+
+We **propose** to estimate sexual dimorphism as a causal inference problem.
+
+&lt;img src="img/causal.jpg" style="width:100%"  align="center"&gt;
+
+`\(\tau(\mathbf{p}) = E[BMI_j(1)- BMI_j(0) | \mathbf{P}_j = \mathbf{p}]\)`
+
+
+
+---
+
+
+class: middle
+
+## Random Causal Forest
+
+&lt;img src="img/RCF.jpg" style="width:100%"  align="center"&gt;
+
+Athey, et al. Ann. Statist. 2019, 47(2): 1148-1178
+
+
+
+---
+
+
+class: middle
+
+## teff (treatment effects prediction)
+
+&lt;img src="img/teff.JPG" style="width:60%"  align="center"&gt;
+
+The package uses RCF to estimate the **transcriptomic** groups where the effect of a **treatment** on an **outcome**  is maximum.
+
+#### For the data challenge:
+
+- Transcriptomic data `\(\rightarrow\)` Exposomic data
+- Treatment `\(\rightarrow\)` Sex
+- Outcome `\(\rightarrow\)` BMI
+
+---
+
+
+
+class: middle
+
+## Individuals with significant sex-effects on BMI
+
+We found 46 individuals from 155 (test set) with significantly negative sexual dimorphism in BMI (M&gt;F). 
+
+&lt;img src="img/bmitau.png" style="width:50%"  align="center"&gt;&lt;img src="img/imp.png" style="width:50%"  align="center"&gt;
+
+- We **selected** 31 informative exposures: Those whose interaction with sex significantly associated (nominal level) with zBMI. we adjusted by all covariates available in the exposome dataset.
+
+---
+
+
+class: middle
+
+## teff Code
+
+
+
+```r
+#...FORMATIG DATA
+
+#data for teff
+data4teff &lt;- list(features=data.frame(modexp), 
+                  teffdata = data.frame(mod))
+
+#appluy RCF
+pred &lt;- predicteff(data4teff, 
+                   featuresinf = rownames(texpsig))
+
+ctrl &lt;- list(lb=c("Male", "Female"), 
+             wht="bottomright", whs = "topleft")
+
+plotPredict(pred, 
+            lb="Associated sexual dimorphism",
+            ctrl.plot=ctrl)
+```
+
+
+---
+
+
+
+class: middle
+
+## Targetting individuals on an exposure environment
+
+
+
+&lt;img src="img/target.jpg" style="width:80%"  align="center"&gt;
+
+
+---
+
+class: middle
+
+## Exposure environment of high dimorphism 
+
+&lt;img src="img/tar.png" style="width:80%"  align="center"&gt;
+
+- Red: adjusted exposures that were **higher** than the overall mean
+
+- Green: adjusted exposures that were **lower** than the overall mean
+
+
+
+
+---
+
+class: middle
+
+## Exposure environment of high dimorphism 
+
+&lt;img src="img/int.png" style="width:100%"  align="center"&gt;
+
+
+---
+
+
+class: middle
+
+## teff code 
+
+
+
+```r
+pred &lt;- predicteff(data4teff, 
+                   featuresinf = rownames(texpsig),
+                   profile = TRUE, quant = 0.7)
+
+tar &lt;- target(data4teff, pred, 
+              effect = "negative", 
+              mat = 0.7,
+              lb = code[pred$featurenames$featurenames,"labels"])
+```
+
+
+---
+
+class: middle
+
+## Exposure environment of high dimorphism 
+
+
+```r
+tar
+```
+
+
+```
+## object of class: tarteff 
+## 
+## classification into 
+##   negative treatment effect: 1
+##   neutral: 0
+##  
+##   0   1 
+## 790 217 
+## 
+## interaction fitted model: gaussian
+##     Estimate   Std. Error      t value     Pr(&gt;|t|) 
+## -0.524140672  0.177261958 -2.956870600  0.003180596
+```
+
+---
+
+class: middle
+
+## Molecular correlates of the exposure environment
+
+&lt;img src="img/volcexp.png" style="width:50%"  align="center"&gt;
+
+- *METTL3* a subunit of the most abundant **methyltransferase** of mRNA (m6A).
+
+- Upregulation of *METTL3* is involved in **adipogenesis** and in M1 **magrophague** polarization (PMC6066751, PMID: 31365297). 
+
+- *FTO* (fat mass and obesity-associated protein) **reverses** the action of m6A (PMID: 28002401). 
+ 
+
+- *METTL3* also regulates **chromosome-X inactivation** in females.
+
+---
+
+class: middle
+
+## Molecular correlates of the exposure environment
+
+&lt;img src="img/enrich.png" style="width:60%"  align="center"&gt;
+
+These erichment associations were led by 4 genes: 
+
+- *SLC5A9*, *SLC2A8*, *SLC2A6* and  *SLC5A1*. 
+
+- They encode **glucose transporters**: GLUT9, GLUT8, GLUT6 and SGLT1.
+
+
+
+---
+
+class: middle
+
+## Molecular correlates of the exposure environment
+
+&lt;img src="img/expmet.png" style="width:70%"  align="center"&gt;
+
+- Increased expression of *METTL3* associated with more methylation (cg16190350) and less expression of *SLC2A6*.
+
+- *SLC2A6* is involved in the activation of **inflammatory macrophages** M1 (PMID: 30700586)
+
+
+
+---
+
+class: middle
+
+## Molecular correlates of the exposure environment
+
+Association of **immune cell abundance** with BMI and the interaction between the exposure environment and sex. 
+
+
+```
+##             BMI      P envExp*sex      P
+## NK_6     0.0002 0.8255     0.0010 0.9126
+## Bcell_6  0.0001 0.9415     0.0070 0.3883
+## CD4T_6  -0.0063 0.0002     0.0010 0.9415
+## CD8T_6  -0.0029 0.0255     0.0209 0.0469
+## Gran_6   0.0079 0.0070    -0.0248 0.2883
+## Mono_6   0.0017 0.0267    -0.0046 0.4452
+```
+
+---
+
+class: middle
+
+## Molecular correlates of the exposure environment
+
+Association of immune cell abundance with *SLC2A6*  and the interaction between *METTL3* and sex. 
+
+
+```
+##          SLC2A6      P METTL3*sex      P
+## NK_6    -0.0115 0.4441    -0.0652 0.0059
+## Bcell_6 -0.0005 0.9719     0.0356 0.1082
+## CD4T_6  -0.0077 0.7464     0.0237 0.5271
+## CD8T_6  -0.0167 0.3611     0.0148 0.6077
+## Gran_6   0.0110 0.7864     0.0007 0.9911
+## Mono_6   0.0232 0.0253    -0.0062 0.7074
+```
+
+---
+
+class: middle
+
+## Molecular correlates of the exposure environment
+
+
+&lt;img src="img/methyl.png" style="width:50%"  align="center"&gt;
+
+Significant methlylome-wide CpGs in genes with immune function:
+
+- cg16406960 is at *GNLY* that enocodes granulysin an **antimicrobial** peptide relased by cytolytic T cells
+
+- cg20839991 is at *HLA-DPB2*, major **Histocompatibility** Complex, Class II, DP Beta 2. 
+
+
+---
+
+
+class: middle
+
+## Final remaks
+
+- We identified an **environment of negative dimorphism in BMI** (M&gt;F) that could be linked to meaningful molecular mechanisms.
+
+- These included genes involved in **immune response** and **adipogenenis**. 
+
+- The 12-exposure environment included increments in PM10, low meterological temperature, high humidity and the reduction and increment of specific organochlorines, phthalates and phenols.    
+
+- The exposure environment **should be validated** with external data  and simplified (standardized) for public health interventions.
+
+- The method is sensitive on **variable selection**. 
+
+- We found exposure environments of high dimorphism for **IQ** and **asthma** but they could not be linked to molecular function. 
+
+- We **did not find** an exposure environments of high dimorphism for **obesity**, but the BMI exposure environment significantly modulated the obeseity dimorphism.
+
+
+
+---
+
+
+class: middle
+
+## Further question 
+
+### To which extent immflamation from environmental exposures can trigger obesity?
+
+
+---
+
+class: middle
+name: Alejandro-Caceres
+
+.left-col-50[
+&lt;img src="img/brge.png" width = "300px"/&gt;
+### Alejandro Cáceres@BRGE
+&lt;i class="fas fa-flask"&gt;&lt;/i&gt;&amp;nbsp;ISGlobal Bioinformatics Research Group in Epidemiology ([BRGE](https://brge.isglobal.org/))&lt;br /&gt;
+&lt;i class="fas fa-envelope"&gt;&lt;/i&gt;&amp;nbsp;alejandro.caceres@isglobal.org&lt;br /&gt;
+]
+
+.rigth-col-50[
+
+## Thank you for your attention
+
+### Find the [slides](https://alejandro-isglobal.github.io/teff/slidesCaceres) and the [code](https://alejandro-isglobal.github.io/teff/code) online.
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
