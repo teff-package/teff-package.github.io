@@ -6,7 +6,7 @@ navbar:
     - text: "Quick Start"
       href: https://teff-package.github.io/teff/teff.html
     - text: "Case Study: Psoriasis"
-      href: https://teff-package.github.io/teff/teff.html
+      href: https://teff-package.github.io/teff/SupplementaryCaceres2021.html
     - text: "Sexual Dimorphism"
       href: https://teff-package.github.io/teff/dimorphisms.html
   right:
