@@ -2,6 +2,7 @@ name: "teff: Profiling heterogenous Treatment EFFects with transcriptomic data"
 output_dir: "."
 navbar:
   title: "The teff R package"
+
   left:
     - text: "Quick Start"
       href: https://teff-package.github.io/teff/teff.html
@@ -15,8 +16,6 @@ navbar:
   right:
     - icon: fa-link fa-lg
       href: https://brge.isglobal.org/
-    - icon: fa-envelope fa-lg
-      href: mailto:alejandro.caceres@isglobal.org
 
 output:
   html_document:
