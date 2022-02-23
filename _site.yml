@@ -7,8 +7,11 @@ navbar:
       href: https://teff-package.github.io/teff/teff.html
     - text: "Case Study: Psoriasis"
       href: https://teff-package.github.io/teff/SupplementaryCaceres2021.html
-    - text: "Sexual Dimorphism"
+    - text: "Immune sexual dimorphism"
       href: https://teff-package.github.io/teff/dimorphisms.html
+    - text: "Exposomic sexual dimorphism"
+      href: https://teff-package.github.io/teff/code.html
+
   right:
     - icon: fa-link fa-lg
       href: https://brge.isglobal.org/
