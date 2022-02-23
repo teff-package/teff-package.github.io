@@ -250,7 +250,10 @@ $(document).ready(function () {
   <a href="https://teff-package.github.io/teff/SupplementaryCaceres2021.html">Case Study: Psoriasis</a>
 </li>
 <li>
-  <a href="https://teff-package.github.io/teff/dimorphisms.html">Sexual Dimorphism</a>
+  <a href="https://teff-package.github.io/teff/dimorphisms.html">Immune sexual dimorphism</a>
+</li>
+<li>
+  <a href="https://teff-package.github.io/teff/code.html">Exposomic sexual dimorphism</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -282,25 +285,28 @@ $(document).ready(function () {
 <p><link rel="stylesheet" href="styles.css" type="text/css"> This is an R library for estimating which individuals would respond best to a treatment on an outcome, given their values in gene transcription data.</p>
 <div id="section" class="section level2">
 <h2>——</h2>
+<p><img src="img/Figure1.jpg" style="width:90%"  align="center" ></p>
 </div>
 <div id="what-it-does" class="section level2">
 <h2>What it does</h2>
-<p><code>teff</code> is a software package to estimate the expected effect of treating a <strong>single</strong> individual given the individual’s profile in some feature data. The individual treatment effect is the expected difference in outcome between two treatments (treatment/no-treatment, drug/placebo) when feature data are kept constant. The package focuses on transcriptomic features for which surrogate covariates need to be estimated. The estimation of individual treatment effects is based on causal inference using causal random forest as implemented in the package <a href="https://github.com/grf-labs/grf">grf</a> by Tibshirani et al.</p>
-<p>Feature profiles associated to positive and negative effects of treatment can then be extracted, based on the feature data of individuals with significant treatment effects. If such profiles can be identified then new individuals can be targeted and classified into groups of positive, negative or neutral treatment effects. When the outcome and treatment data are also available for these new individuals, the package can test whether the association between the treatment and outcome is indeed different across groups of associated positive and negative treatment effects.</p>
+<p><code>teff</code> is a software package to estimate the expected effect of treating a <strong>single</strong> individual given the individual’s profile in some high dimensional feature data. The individual treatment effect is the expected difference in outcome between two treatments (treatment/no-treatment, drug/placebo) when feature data are kept constant. The package focuses on transcriptomic features for which surrogate covariates need to be estimated. The estimation of individual treatment effects is based on causal inference using causal random forest (CRF) as implemented in the package <a href="https://github.com/grf-labs/grf">grf</a> by Tibshirani et al.</p>
+<p>The analysis strategy is based on the selection of features, subjects and extraction of a binary profile to positive, or even negative, effects of treatment. Selection of features are obtained by selecting transcription levels whose association with treatment response is significantly modulated by the treatment. Selection of individuals are those with significant treatment effects, as estimated by CRF. An average binarized profile of significant individuals is then constructed. If such profile can be identified then new individuals can be targeted and classified into groups of positive (or negative) and neutral treatment effects. When treatment and treatment response data are also available for these new individuals, the package can test whether the association between the treatment and outcome is indeed different across groups of associated positive and negative treatment effects.</p>
 <p>Applications include:</p>
 <ul>
-<li><p>Forecasting treatment effect of brodalumab treatment of psoriasis from gene expression data at baseline. See <a href="https://teff-package.github.io/teff/teff.html">application</a></p></li>
-<li><p>Extracting gene expression profiles for which men and women have high differences on immune cell count in blood. In this application sex is considered as a treatment. See <a href="https://teff-package.github.io/teff/dimorphisms.html">application</a> .</p></li>
+<li><p>Forecasting treatment effect of brodalumab treatment of psoriasis from gene expression data at baseline. See <a href="https://teff-package.github.io/teff/teff.html">application</a>.</p></li>
+<li><p>Extracting gene expression profiles for which men and women have high differences on immune cell count in blood. In this application sex is considered as a treatment. See <a href="https://teff-package.github.io/teff/dimorphisms.html">application</a>.</p></li>
+<li><p>Determining exposure environmenents with high sexual dimorphisms. Exposome Data Challenge 2021 wiinner application <a href="https://teff-package.github.io/teff/code.html">application</a>.</p></li>
 </ul>
 </div>
 <div id="how-it-does-it" class="section level2">
 <h2>How it does it</h2>
-<p>The classification is based on the application of causal random forest to identify the individuals with significant treatment effects. Individuals with significant treatment effects are those whose confidence intervals for the treatment effect estimate do not overlap 0 (or a defined threshold).</p>
+<p>Feature selection is performed with transcriptome-wide differential gene expression for the interaction between treatment and response.</p>
+<p>Individual targeting into groups of different treatment effects is based on the application of CRF to identify the individuals with significant treatment effects. Individuals with significant treatment effects are those whose confidence intervals for the treatment effect estimate do not overlap 0 (or a defined threshold).</p>
 <p>When possible, single consensus profiles of individuals with positive, and negative, treatment effects are obtained from majority votes of features adjusted for covariates.</p>
 </div>
 <div id="additional-functions" class="section level2">
 <h2>Additional functions</h2>
-<p>The package includes functions to extract feature and treatment data from transcriptomic and methylomic studies.</p>
+<p>The package includes functions to extract feature and treatment data from transcriptomic studies.</p>
 </div>
 <div id="install" class="section level2">
 <h2>Install</h2>
