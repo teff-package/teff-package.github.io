@@ -51,7 +51,25 @@ library(devtools)
 install_github("teff-package/teff")
 </code>
 
+You can also download the source code
 
+- Source: [teff_0.1.0.tar.gz](https://teff-package.github.io/teff/bin/teff_0.1.0.tar.gz)
+
+or binaries
+
+- Debian Linux, R-devel, GCC: [teff_0.1.0_R_x86_64-pc-linux-gnu.tar.gz](https://teff-package.github.io/teff/bin/teff_0.1.0_R_x86_64-pc-linux-gnu.tar.gz)
+- Windows Server 2022, R-devel, 64 bit: [teff_0.1.0.zip](https://teff-package.github.io/teff/bin/teff_0.1.0.zip) 
+- macOS 10.13.6 High Sierra, R-release, CRAN's setup: [teff_0.1.0.tgz](https://teff-package.github.io/teff/bin/teff_0.1.0.tgz)
+
+
+and, for instance, install for Windows with 
+
+<code>
+library(devtools)
+</code>
+</br><code>
+install_local("teff_0.1.0.zip", dependencies=TRUE)
+</code>
 
 </br>See [application to Brodalumab treatment of psoriasis](https://teff-package.github.io/teff/SupplementaryCaceres2021.html)
 
