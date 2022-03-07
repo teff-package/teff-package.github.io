@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Causal random forest for transcriptomic data</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Alejandro Cáceres" />
+    <script src="my_template_files/header-attrs/header-attrs.js"></script>
+    <link href="my_template_files/remark-css/default.css" rel="stylesheet" />
+    <link href="my_template_files/remark-css/default-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="my.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Causal random forest for transcriptomic data
+## BRGE ISGlobal
+### <a href="#alejandro-caceres">Alejandro Cáceres</a>
+### 9/03/2022
+
+---
+
+
+
+
+
+class: middle, center
+
+## ¿What is causal inference?
+
+---
+
+class: middle, center
+
+## Randomized placebo-control trial
+
+
+&lt;img src="img/causal1.JPG" style="width:100%"  align="center"&gt;
+
+
+
+---
+
+class: middle, center
+
+## Parallel universe
+
+&lt;img src="img/causal2.JPG" style="width:100%"  align="center"&gt;
+
+
+
+---
+
+class: middle, center
+
+## Parallel universe
+
+&lt;img src="img/causal3.JPG" style="width:100%"  align="center"&gt;
+
+
+We probably **should have not** treated
+
+
+
+---
+
+class: middle
+
+Causal inference is the estimation of 
+
+`$$\tau(S1)=E[R_{S1}(drug)-R_{S1}(placebo)]$$`
+
+
+---
+
+class: middle, center
+
+## Causal inference 
+
+&lt;img src="img/RECnew.JPG" style="width:100%"  align="center"&gt;
+
+---
+
+class: middle, center
+
+## Causal Random Forest
+
+
+&lt;embed src="img/ci.JPG" style="width:60%"  align="center"&gt;
+
+
+---
+
+class: middle, center
+
+## Can we identify a set of conditions of individuals for which treatment response would be high or at least beneficial?
+
+
+&lt;embed src="img/inter.JPG" style="width:140%"  align="center"&gt;
+
+
+---
+
+class: middle
+
+## Conditions (high dimiensional covariate data)
+
+- **Transciptomic data**
+
+## Treatments
+- **Sex** (sexual dimorphism)
+
+
+
+---
+
+class: middle
+
+## Transcriptomic data
+
+RCF is implemented in the R-package *grf* but
+
+- Differential expression analysis take transcriptomic data is outcome not covariate data
+- Transctiptomic data needs to be adjusted by surrogate variables
+- We would like to obtain a classificator of individuals with high treatment effects that can be used in other studies  
+
+---
+
+class: middle
+
+## We implemented teff
+
+
+[https://teff-package.github.io/](https://teff-package.github.io/)
+
+
+under revision in Bioinformatics (answered reviewer's comments)
+
+---
+
+class: middle
+
+## Transcriptomic data
+
+
+&lt;embed src="img/Figure1.JPG" style="width:100%"  align="center"&gt;
+
+
+---
+
+class: middle
+
+## Sexual dimorphism
+
+We used *teff* when treatment is sex, and the outcome is immune cell abundance in blood. 
+
+&lt;embed src="img/Figure1d.png" style="width:70%"  align="center"&gt;
+
+under submission
+
+
+---
+
+class: middle, center
+
+## Sexual dimorphism
+
+&lt;embed src="img/Figure4.jpg" style="width:50%"  align="center"&gt;
+
+
+---
+
+class: middle, center
+
+## Sexual dimorphism
+
+&lt;embed src="img/Figure5.jpg" style="width:50%"  align="center"&gt;
+
+
+---
+
+class: middle, center
+
+## Sexual dimorphism
+
+&lt;embed src="img/Figure5.jpg" style="width:50%"  align="center"&gt;
+
+
+---
+
+class: middle, center
+
+## Sexual dimorphism in cancer risk 
+
+&lt;embed src="img/Figure6.jpg" style="width:100%"  align="center"&gt;
+
+
+---
+
+class: middle, center
+
+## Sexual dimorphism in cancer survival 
+
+&lt;embed src="img/Figure7.jpg" style="width:100%"  align="center"&gt;
+
+
+---
+
+class: middle
+
+## Enviromental profile of sexual dimorphism in BMI
+
+We used *teff* when:
+
+- Treatment is sex
+- The outcome is BMI
+- The covariates are exposures (exosome data)
+
+Exposome data challenge 2021 ... under writing
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
